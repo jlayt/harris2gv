@@ -24,6 +24,9 @@
 
 from sys import argv
 
+source =''
+destination = ''
+
 dataset = ''
 nodes = []
 edges = []
@@ -40,13 +43,13 @@ def setEdges(node, below):
 
 def readFile():
     with open(source) as file:
-        print 'Opened file :' + source
+        #print 'Opened file : ' + source
         line = file.readline().strip()
         if (line is None or not line.startswith('Stratigraphic Dataset')):
             print 'Invalid Header Line'
             return
-        dataset = line.strip().lstrip('Stratigraphic Dataset').strip()
-        print 'Reading dataset: ' + dataset
+        dataset = line.strip()[len('Stratigraphic Dataset'):].strip()
+        #print 'Reading dataset: ' + dataset
         line = file.readline().strip()
         if (line is None or line != ''):
             print 'Missing Blank Line'
@@ -89,18 +92,28 @@ def readFile():
         setNode(context, unit)
         setEdges(context, below)
 
-if len(argv) = 2:
+
+if len(argv) == 2:
     cmd, source = argv
 else:
     cmd, source, destination = argv
 
 readFile()
 
-if
-print 'Nodes:'
-for node in nodes:
-    print node
+print 'strict digraph' + dataset.replace(' ', '_') + '{'
+print '    splines=polyline' # Should be ortho but ports support not implemented
+print '    concentrate=true'
+print '    ranksep="1.0 equally"'
+print '    nodesep="1.0 equally"'
+print '    node [shape=box]'
+print '    edge [arrowhead=none headport=n tailport=s]'
 
-print 'Edges'
+#print 'Nodes:'
+#for node in nodes:
+#    print node
+
+#print 'Edges'
 for edge in edges:
-    print '    ' + edge[0] + ' -> ' + edge[1] + ';'
+    print '    ' + '"' + edge[0] + '"' + ' -> ' + '"' + edge[1] + '";'
+
+print '}'
