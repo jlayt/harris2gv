@@ -34,12 +34,31 @@ edges = []
 def parseValueList(input, tag):
     return input[len(tag):].strip().replace(',', ' ').split()
 
-def setNode(node, unit):
-    nodes.append({'id': node, 'unit': unit})
+def getNode(id):
+    for node in nodes:
+        if node['id'] == id:
+            return node
 
-def setEdges(node, below):
-    for descendent in below:
-        edges.append([node, descendent])
+def setNode(node, unit, above, below):
+    nodes.append({'id': node, 'unit': unit, 'above': above, 'below': below})
+
+def setEdges(parent, children):
+    for child in children:
+        edges.append({'from': parent, 'to': child, 'weight': 1})
+
+def childEdgesForNode(id):
+    children = []
+    for edge in edges:
+        if edge['from'] == id:
+            children.append(edge)
+    return children
+
+def parentEdgesForNode(id):
+    parents = []
+    for edge in edges:
+        if edge['to'] == id:
+            parents.append(edge)
+    return parents
 
 def readFile():
     with open(source) as file:
@@ -68,7 +87,7 @@ def readFile():
             if (line == ''):
                 pass
             elif (not line.startswith('            ')):
-                setNode(context, unit)
+                setNode(context, unit, len(above), len(below))
                 setEdges(context, below)
                 context = line.strip()
                 above = []
@@ -89,9 +108,15 @@ def readFile():
                 elif (attribute.lower().startswith('unit class:')):
                     unit = attribute[len('unit class:'):].strip()
 
-        setNode(context, unit)
+        setNode(context, unit, len(above), len(below))
         setEdges(context, below)
 
+def weightEdges():
+    for edge in edges:
+        if getNode(edge['from'])['below'] == 1:
+            edge['weight'] = edge['weight'] + 2
+        if getNode(edge['to'])['above'] == 1:
+            edge['weight'] = edge['weight'] + 2
 
 if len(argv) == 2:
     cmd, source = argv
@@ -99,6 +124,7 @@ else:
     cmd, source, destination = argv
 
 readFile()
+#weightEdges()
 
 print 'strict digraph' + dataset.replace(' ', '_') + '{'
 print '    splines=polyline' # Should be ortho but ports support not implemented
@@ -114,6 +140,6 @@ print '    edge [arrowhead=none headport=n tailport=s]'
 
 #print 'Edges'
 for edge in edges:
-    print '    ' + '"' + edge[0] + '"' + ' -> ' + '"' + edge[1] + '";'
+    print '    ' + '"' + edge['from'] + '"' + ' -> ' + '"' + edge['to'] + '" [weight=' + str(edge['weight']) + '];'
 
 print '}'
