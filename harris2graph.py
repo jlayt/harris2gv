@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
@@ -22,11 +23,7 @@
  ***************************************************************************/
 """
 
-import sys
-
-source =''
-destination = ''
-graph = 'gml'
+import sys, os, argparse
 
 dataset = ''
 nodes = []
@@ -35,6 +32,21 @@ nodeId = 0
 edgeId = 0
 boxWidth = 50
 boxHeight = 25
+
+def printUsage():
+    print 'USAGE: python harris2graph.py source.lst destination.graph'
+    print '       python harris2graph.py -g graph source.lst  destination.graph'
+    print '       python harris2graph.py -g graph source.lst > destination.graph'
+    print 'Where "-g graph" or destination suffix ".graph" is the graph file type to be written'
+    print 'Supported graph file tyles are GraphViz (.gv/.dot) and GML (.gml)'
+
+def printHelp():
+    print 'A tool to convert legacy .LST Harris Matrix files into modern graph formats.\n'
+    print 'LST format only describes the node relationships and not the node or edge layout.,'
+    print 'harris2graph will only create graph files containing this relationship data and no layout.'
+    print 'All nodes are given a position and size of x = 0, y = 0, w = 50, h = 25\n'
+    print 'You must layout the nodes and edges using another tool.\n'
+    printUsage()
 
 def parseValueList(input, tag):
     return input[len(tag):].strip().replace(',', ' ').split()
@@ -57,7 +69,7 @@ def nodeIdForLabel(label):
             return node['id']
     return -1
 
-def readLst():
+def readLst(source):
     with open(source) as file:
         #print 'Opened file : ' + source
         line = file.readline().strip()
@@ -121,10 +133,10 @@ def writeGv():
     print '    ranksep="1.0 equally"'
     print '    nodesep="2.0 equally"'
     print '    node [shape=box]'
-    print '    edge [arrowhead=none headport=n tailport=s width=' + boxWidth + ' height=' + boxHeight + ']'
+    print '    edge [arrowhead=none headport=n tailport=s width=' + str(boxWidth) + ' height=' + str(boxHeight) + ']'
 
     for edge in edges:
-        print '    ' + '"' + edge['source'] + '"' + ' -> ' + '"' + edge['target'] + '";'
+        print '    ' + '"' + str(edge['source']) + '"' + ' -> ' + '"' + str(edge['target']) + '";'
 
     print '}'
 
@@ -160,21 +172,30 @@ def writeGml():
 
     print ']'
 
-if len(sys.argv) == 2:
-    cmd, source = sys.argv
-else:
-    cmd, source, destination = sys.argv
+parser = argparse.ArgumentParser()
+parser.add_argument("-o", "--output", help="Write graph to output file")
+parser.add_argument("-g", "--graph", help="Choose output graph format", choices=['gv', 'dot', 'gml'])
+parser.add_argument("source", help="Source .lst file")
+args = parser.parse_args()
 
-readLst()
+graph = 'gml'
+if args.graph:
+    graph = args.graph
+elif args.output:
+    basename, graph = os.path.splitext(args.output)
+    graph = graph.strip('.')
+
+graph = graph.lower()
+readLst(args.source)
 
 old_stdout = sys.stdout
-if (destination):
-    sys.stdout = open(destination, 'w')
+if (args.output):
+    sys.stdout = open(args.output, 'w')
 
-if graph = 'gv':
+if (graph == 'gv' or graph == 'dot'):
     writeGv()
 else:
     writeGml()
 
-if (destination):
+if (args.output):
     sys.stdout = old_stdout
