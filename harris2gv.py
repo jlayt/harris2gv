@@ -104,7 +104,7 @@ print 'strict digraph' + dataset.replace(' ', '_') + '{'
 print '    splines=polyline' # Should be ortho but ports support not implemented
 print '    concentrate=true'
 print '    ranksep="1.0 equally"'
-print '    nodesep="1.0 equally"'
+print '    nodesep="2.0 equally"'
 print '    node [shape=box]'
 print '    edge [arrowhead=none headport=n tailport=s]'
 
