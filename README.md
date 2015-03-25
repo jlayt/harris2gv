@@ -1,5 +1,6 @@
 # harris2graph
-## A tool to convert legacy .LST Harris Matrix files into modern graph formats.
+
+### A tool to convert legacy .LST Harris Matrix files into modern graph formats.
 
 harris2graph is a script to help migrate data from the LST file format used by the BASP Harris, Stratify and ArchEd packages into modern graph file formats.
 

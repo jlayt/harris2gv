@@ -1,62 +1,62 @@
-            Stratigraphic Dataset guy test
+            Stratigraphic Dataset strattest
 
 Name
-GUY::1
-            below: GUY::2
+TST::1
+            below: TST::2
             Unit class: context
-GUY::2
-            below: GUY::3, GUY::41
-            above: GUY::1
+TST::2
+            below: TST::3, TST::41
+            above: TST::1
             Unit class: context
-GUY::27
-            below: GUY::28, GUY::29
+TST::27
+            below: TST::28, TST::29
             Unit class: context
-GUY::28
-            below: GUY::30
-            above: GUY::27
+TST::28
+            below: TST::30
+            above: TST::27
             Unit class: context
-GUY::29
-            below: GUY::30
-            above: GUY::27
+TST::29
+            below: TST::30
+            above: TST::27
             Unit class: context
-GUY::3
-            below: GUY::4
-            above: GUY::2
+TST::3
+            below: TST::4
+            above: TST::2
             Unit class: context
-GUY::30
-            below: GUY::70
-            above: GUY::28, GUY::29
+TST::30
+            below: TST::70
+            above: TST::28, TST::29
             Unit class: context
-GUY::35
-            above: GUY::44, GUY::54
+TST::35
+            above: TST::44, TST::54
             Unit class: context
-GUY::4
-            above: GUY::3
+TST::4
+            above: TST::3
             Unit class: context
-GUY::41
-            above: GUY::2, GUY::52
+TST::41
+            above: TST::2, TST::52
             Unit class: context
-GUY::42
-            below: GUY::70
-            above: GUY::52
+TST::42
+            below: TST::70
+            above: TST::52
             Unit class: context
-GUY::43
-            above: GUY::52
+TST::43
+            above: TST::52
             Unit class: context
-GUY::44
-            below: GUY::35
-            above: GUY::52
+TST::44
+            below: TST::35
+            above: TST::52
             Unit class: context
-GUY::52
-            below: GUY::41, GUY::42, GUY::43, GUY::44
-            above: GUY::53
+TST::52
+            below: TST::41, TST::42, TST::43, TST::44
+            above: TST::53
             Unit class: context
-GUY::53
-            below: GUY::52
+TST::53
+            below: TST::52
             Unit class: context
-GUY::54
-            below: GUY::35
+TST::54
+            below: TST::35
             Unit class: context
-GUY::70
-            above: GUY::30, GUY::42
+TST::70
+            above: TST::30, TST::42
             Unit class: context
