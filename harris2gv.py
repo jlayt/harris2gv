@@ -40,6 +40,8 @@ def getNode(id):
             return node
 
 def setNode(node, unit, above, below):
+    if node is None or node == '':
+        return
     nodes.append({'id': node, 'unit': unit, 'above': above, 'below': below})
 
 def setEdges(parent, children):
@@ -124,22 +126,24 @@ else:
     cmd, source, destination = argv
 
 readFile()
-#weightEdges()
+weightEdges()
 
 print 'strict digraph' + dataset.replace(' ', '_') + '{'
 print '    splines=polyline' # Should be ortho but ports support not implemented
 print '    concentrate=true'
+print '    remincross=true'
 print '    ranksep="1.0 equally"'
 print '    nodesep="2.0 equally"'
 print '    node [shape=box]'
-print '    edge [arrowhead=none headport=n tailport=s]'
+print '    edge [arrowhead=none]' # headport=n tailport=s
 
 #print 'Nodes:'
 #for node in nodes:
+#    print '    "' + node['id'] + '" [label="' + node['id'] + '", xlabel="' + node['id'] + '", pos="0,0"]'
 #    print node
 
 #print 'Edges'
 for edge in edges:
-    print '    ' + '"' + edge['from'] + '"' + ' -> ' + '"' + edge['to'] + '" [weight=' + str(edge['weight']) + '];'
+    print '    ' + '"' + edge['from'] + '"' + ' -> ' + '"' + edge['to'] + '";'# [weight=' + str(edge['weight']) + '];'
 
 print '}'
