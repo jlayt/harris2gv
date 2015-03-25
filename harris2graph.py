@@ -234,6 +234,14 @@ def writeGxl(simple):
     print '</gxl>'
 
 
+def writeTgf(simple):
+    for node in nodes:
+        print str(node['id'])  + ' ' + str(node['label'])
+    print '#'
+    for edge in edges:
+            print str(edge['source'])  + ' ' + str(edge['target'])
+
+
 def writeCsv(simple):
     if simple:
         for edge in edges:
@@ -246,7 +254,7 @@ def writeCsv(simple):
 
 
 parser = argparse.ArgumentParser(description='A tool to convert legacy .LST Harris Matrix files into modern graph formats.')
-parser.add_argument("-g", "--graph", help="Choose output graph format, optional, defaults to outfile suffix", choices=['gv', 'dot', 'gml', 'graphml', 'gxl', 'csv'])
+parser.add_argument("-g", "--graph", help="Choose output graph format, optional, defaults to outfile suffix", choices=['gv', 'dot', 'gml', 'graphml', 'gxl', 'tgf', 'csv'])
 parser.add_argument("-n", "--name", help="Name for graph")
 parser.add_argument("-wn", "--width", help="Width of node", type=float)
 parser.add_argument("-hn", "--height", help="Height of node", type=float)
@@ -282,6 +290,8 @@ elif (graph == 'graphml'):
     writeGraphML(args.simple)
 elif (graph == 'gxl'):
     writeGxl(args.simple)
+elif (graph == 'tgf'):
+    writeTgf(args.simple)
 elif (graph == 'csv'):
     writeCsv(args.simple)
 else:
