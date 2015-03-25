@@ -216,6 +216,24 @@ def writeGraphML(simple):
     print '</graphml>'
 
 
+def writeGxl(simple):
+    print '<?xml version="1.0" encoding="UTF-8"?>'
+    print '<!DOCTYPE gxl SYSTEM "http://www.gupro.de/GXL/gxl-1.0.dtd">'
+
+    print '<gxl xmlns:xlink=" http://www.w3.org/1999/xlink">'
+
+    print '    <graph id="' + dataset + '" edgeids="true" edgemode="directed">'
+
+    for node in nodes:
+        print '        <node id="' + str(node['label']) + '"/>'
+
+    for edge in edges:
+        print '        <edge id="' + str(edge['id']) + '" from="' + str(edge['sourceLabel']) + '" to="' + str(edge['targetLabel']) + '"/>'
+
+    print '    </graph>'
+    print '</gxl>'
+
+
 def writeCsv(simple):
     if simple:
         for edge in edges:
@@ -228,7 +246,7 @@ def writeCsv(simple):
 
 
 parser = argparse.ArgumentParser(description='A tool to convert legacy .LST Harris Matrix files into modern graph formats.')
-parser.add_argument("-g", "--graph", help="Choose output graph format, optional, defaults to outfile suffix", choices=['gv', 'dot', 'gml', 'graphml', 'csv'])
+parser.add_argument("-g", "--graph", help="Choose output graph format, optional, defaults to outfile suffix", choices=['gv', 'dot', 'gml', 'graphml', 'gxl', 'csv'])
 parser.add_argument("-n", "--name", help="Name for graph")
 parser.add_argument("-wn", "--width", help="Width of node", type=float)
 parser.add_argument("-hn", "--height", help="Height of node", type=float)
@@ -262,6 +280,8 @@ if (graph == 'gv' or graph == 'dot'):
     writeGv(args.simple)
 elif (graph == 'graphml'):
     writeGraphML(args.simple)
+elif (graph == 'gxl'):
+    writeGxl(args.simple)
 elif (graph == 'csv'):
     writeCsv(args.simple)
 else:
