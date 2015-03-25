@@ -216,8 +216,19 @@ def writeGraphML(simple):
     print '</graphml>'
 
 
+def writeCsv(simple):
+    if simple:
+        for edge in edges:
+            print '"' + str(edge['sourceLabel'])  + '", "' + str(edge['targetLabel']) + '"'
+    else:
+        for node in nodes:
+            print '"node", ' + str(node['id'])  + ', "' + str(node['label']) + '"'
+        for edge in edges:
+            print '"edge", ' + str(edge['id'])  + ', ' + str(edge['source'])  + ', ' + str(edge['target'])
+
+
 parser = argparse.ArgumentParser(description='A tool to convert legacy .LST Harris Matrix files into modern graph formats.')
-parser.add_argument("-g", "--graph", help="Choose output graph format, optional, defaults to outfile suffix", choices=['gv', 'dot', 'gml', 'graphml'])
+parser.add_argument("-g", "--graph", help="Choose output graph format, optional, defaults to outfile suffix", choices=['gv', 'dot', 'gml', 'graphml', 'csv'])
 parser.add_argument("-n", "--name", help="Name for graph")
 parser.add_argument("-wn", "--width", help="Width of node", type=float)
 parser.add_argument("-hn", "--height", help="Height of node", type=float)
@@ -251,6 +262,8 @@ if (graph == 'gv' or graph == 'dot'):
     writeGv(args.simple)
 elif (graph == 'graphml'):
     writeGraphML(args.simple)
+elif (graph == 'csv'):
+    writeCsv(args.simple)
 else:
     writeGml(args.simple)
 
